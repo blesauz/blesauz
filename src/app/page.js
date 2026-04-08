@@ -1,150 +1,391 @@
-export default function Home() {
+'use client'
+import { useState } from 'react'
+
+export default function ListProperty() {
+  const [step, setStep] = useState(1)
+
   return (
     <main className="min-h-screen bg-gray-50">
 
       {/* NAV */}
       <nav className="bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center">
-        <div className="text-xl font-bold">
+        <a href="/" className="text-xl font-bold text-gray-900">
           Blesauz<span className="text-green-600">.</span>
-        </div>
-        <div className="flex items-center gap-6 text-sm text-gray-500">
-          <span className="cursor-pointer hover:text-gray-800">Nyumba</span>
-          <span className="cursor-pointer hover:text-gray-800">Apartments</span>
-          <button className="border border-green-600 text-green-600 px-4 py-2 rounded-lg text-sm hover:bg-green-50">
-            Orodhesha Mali
-          </button>
-          <button className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700">
-            Ingia
-          </button>
-        </div>
+        </a>
+        <div className="text-sm text-gray-400">List your property</div>
       </nav>
 
-      {/* HERO */}
-      <section className="max-w-4xl mx-auto text-center px-6 py-20">
-        <div className="inline-block bg-green-50 text-green-700 text-xs font-medium px-4 py-1 rounded-full mb-6">
-          Tanzania's Property Platform
-        </div>
-        <h1 className="text-5xl font-bold text-gray-900 leading-tight mb-4">
-          Pata Nyumba Yako ya <span className="text-green-600 italic">Ndoto</span>
-        </h1>
-        <p className="text-gray-500 text-lg max-w-xl mx-auto mb-8">
-          Browse apartments and houses across Tanzania. View sizes, amenities, and call owners directly — no middlemen.
-        </p>
-        <div className="flex bg-white border border-gray-200 rounded-xl px-4 py-2 max-w-2xl mx-auto items-center gap-3 shadow-sm mb-4">
-          <input
-            type="text"
-            placeholder="Search by area, e.g. Masaki, Kariakoo..."
-            className="flex-1 outline-none text-sm text-gray-700"
-          />
-          <select className="border-l border-gray-200 pl-3 text-sm text-gray-500 outline-none bg-transparent">
-            <option>All types</option>
-            <option>Apartment</option>
-            <option>House</option>
-            <option>Studio</option>
-          </select>
-          <button className="bg-green-600 text-white px-5 py-2 rounded-lg text-sm hover:bg-green-700">
-            Tafuta
-          </button>
-        </div>
-        <div className="flex justify-center gap-3">
-          {['Kukodisha (Rent)', 'Kununua (Buy)', 'Orodhesha'].map((tab, i) => (
-            <button key={i} className={`text-sm px-4 py-2 rounded-full border ${i === 0 ? 'bg-green-600 text-white border-green-600' : 'bg-white text-gray-500 border-gray-200'}`}>
-              {tab}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* STATS */}
-      <div className="flex justify-center gap-12 pb-12">
-        {[['1,240+', 'Properties listed'], ['18', 'Regions covered'], ['3,800+', 'Happy tenants'], ['0%', 'Agent commission']].map(([num, label]) => (
-          <div key={label} className="text-center">
-            <div className="text-3xl font-bold text-gray-900">{num}</div>
-            <div className="text-sm text-gray-400 mt-1">{label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* FEATURED LISTINGS */}
-      <section className="max-w-4xl mx-auto px-6 pb-16">
-        <div className="flex justify-between items-baseline mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">Featured listings</h2>
-          <span className="text-sm text-green-600 underline cursor-pointer">See all →</span>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {[
-            { type: 'Apartment', name: 'Modern 2BR, Masaki', location: 'Masaki, Dar es Salaam', beds: 2, baths: 1, size: 85, price: '900,000', bg: 'bg-green-50' },
-            { type: 'House', name: 'Spacious Villa, Mbezi', location: 'Mbezi Beach, Dar es Salaam', beds: 4, baths: 2, size: 210, price: '2,500,000', bg: 'bg-blue-50' },
-            { type: 'Studio', name: 'Cozy Studio, Kariakoo', location: 'Kariakoo, Dar es Salaam', beds: 1, baths: 1, size: 42, price: '350,000', bg: 'bg-amber-50' },
-          ].map((p) => (
-            <div key={p.name} className="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:border-green-200 transition-all">
-              <div className={`${p.bg} h-40 flex items-center justify-center`}>
-                <svg className="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                </svg>
+      {/* PROGRESS BAR */}
+      <div className="max-w-2xl mx-auto px-6 pt-10">
+        <div className="flex items-center justify-between mb-2">
+          {['Location', 'Property', 'Condition', 'Amenities', 'Photos & Price'].map((label, i) => (
+            <div key={i} className="flex flex-col items-center flex-1">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold mb-1
+                ${step > i + 1 ? 'bg-green-600 text-white' :
+                  step === i + 1 ? 'bg-green-600 text-white' :
+                  'bg-gray-200 text-gray-400'}`}>
+                {step > i + 1 ? '✓' : i + 1}
               </div>
-              <div className="p-4">
-                <div className="text-xs font-semibold text-green-600 uppercase tracking-wide mb-1">{p.type}</div>
-                <div className="font-semibold text-gray-900 mb-1">{p.name}</div>
-                <div className="text-xs text-gray-400 mb-3">📍 {p.location}</div>
-                <div className="flex gap-3 text-xs text-gray-400 mb-3">
-                  <span>🛏 {p.beds} beds</span>
-                  <span>🚿 {p.baths} bath</span>
-                  <span>📐 {p.size} m²</span>
-                </div>
-                <div className="flex justify-between items-center pt-3 border-t border-gray-50">
-                  <div className="font-semibold text-gray-900 text-sm">TZS {p.price}<span className="text-xs text-gray-400 font-normal">/mo</span></div>
-                  <button className="bg-green-50 text-green-700 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-green-100">
-                    📞 Call owner
-                  </button>
-                </div>
+              <div className={`text-xs text-center hidden md:block ${step === i + 1 ? 'text-green-600 font-medium' : 'text-gray-400'}`}>
+                {label}
               </div>
             </div>
           ))}
         </div>
-      </section>
+        <div className="w-full bg-gray-200 rounded-full h-1.5 mb-8">
+          <div
+            className="bg-green-600 h-1.5 rounded-full transition-all duration-500"
+            style={{ width: `${((step - 1) / 4) * 100}%` }}
+          />
+        </div>
 
-      {/* HOW IT WORKS */}
-      <section className="bg-white border-t border-b border-gray-100 py-16 px-6 mb-16">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-10">Jinsi inavyofanya kazi</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { icon: '🔍', title: 'Tafuta', desc: 'Search by location, size, price and type across Tanzania.' },
-              { icon: '🏠', title: 'Angalia', desc: 'View full details — photos, floor sizes and amenities.' },
-              { icon: '📞', title: 'Piga simu', desc: 'Call the owner directly. No agents, no commissions.' },
-              { icon: '🤝', title: 'Kaa', desc: 'Agree on terms with the owner and move in.' },
-            ].map((s) => (
-              <div key={s.title} className="text-center">
-                <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center mx-auto mb-3 text-2xl">{s.icon}</div>
-                <div className="font-semibold text-gray-900 mb-2">{s.title}</div>
-                <div className="text-sm text-gray-400 leading-relaxed">{s.desc}</div>
+        {/* STEP 1 - LOCATION */}
+        {step === 1 && (
+          <div className="bg-white rounded-2xl p-8 border border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Where is the property?</h2>
+            <p className="text-gray-400 text-sm mb-8">Tell us the location so renters can find it easily.</p>
+
+            <div className="space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
+                <select className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 outline-none focus:border-green-500">
+                  <option>Dar es Salaam</option>
+                  <option>Arusha</option>
+                  <option>Mwanza</option>
+                  <option>Dodoma</option>
+                  <option>Zanzibar</option>
+                  <option>Other</option>
+                </select>
               </div>
-            ))}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Area / Neighbourhood</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Masaki, Mbezi Beach, Kariakoo..."
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Street or nearest landmark</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Behind Shoprite Mbezi, near Makumbusho..."
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Distance from city centre</label>
+                  <select className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 outline-none focus:border-green-500">
+                    <option>Less than 1 km</option>
+                    <option>1 - 3 km</option>
+                    <option>3 - 5 km</option>
+                    <option>5 - 10 km</option>
+                    <option>More than 10 km</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Distance from tarmac road</label>
+                  <select className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 outline-none focus:border-green-500">
+                    <option>On tarmac road</option>
+                    <option>Less than 50m</option>
+                    <option>50m - 100m</option>
+                    <option>100m - 200m</option>
+                    <option>200m - 500m</option>
+                    <option>More than 500m</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setStep(2)}
+              className="w-full mt-8 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors">
+              Next: Property Details →
+            </button>
           </div>
-        </div>
-      </section>
+        )}
 
-      {/* OWNER CTA */}
-      <section className="max-w-4xl mx-auto px-6 mb-16">
-        <div className="bg-green-900 rounded-2xl p-10 flex justify-between items-center gap-6 flex-wrap">
-          <div>
-            <h2 className="text-2xl font-bold text-white mb-2">Una nyumba ya kukodisha?</h2>
-            <p className="text-green-300 text-sm">List your property for free and connect directly with tenants across Tanzania.</p>
+        {/* STEP 2 - PROPERTY */}
+        {step === 2 && (
+          <div className="bg-white rounded-2xl p-8 border border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Property details</h2>
+            <p className="text-gray-400 text-sm mb-8">Tell us about the size and layout of your property.</p>
+
+            <div className="space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Property type</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {['Apartment', 'House', 'Studio', 'Villa', 'Townhouse', 'Other'].map((type) => (
+                    <button key={type} className="border border-gray-200 rounded-xl py-3 text-sm text-gray-600 hover:border-green-500 hover:text-green-600 transition-colors">
+                      {type}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Number of bedrooms</label>
+                  <select className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-500">
+                    <option>1</option><option>2</option><option>3</option>
+                    <option>4</option><option>5</option><option>6+</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Number of bathrooms</label>
+                  <select className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-500">
+                    <option>1</option><option>2</option><option>3</option><option>4+</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Total floor area (m²)</label>
+                  <input type="number" placeholder="e.g. 85" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-500" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Kitchen size (m²)</label>
+                  <input type="number" placeholder="e.g. 12" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-500" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Floor level</label>
+                  <select className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-500">
+                    <option>Ground floor</option>
+                    <option>1st floor</option>
+                    <option>2nd floor</option>
+                    <option>3rd floor</option>
+                    <option>Penthouse</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Parking</label>
+                  <select className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-500">
+                    <option>No parking</option>
+                    <option>1 car</option>
+                    <option>2 cars</option>
+                    <option>Shared compound</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-8">
+              <button onClick={() => setStep(1)} className="flex-1 border border-gray-200 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-50">
+                ← Back
+              </button>
+              <button onClick={() => setStep(3)} className="flex-1 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700">
+                Next: Condition →
+              </button>
+            </div>
           </div>
-          <button className="bg-white text-green-900 font-semibold px-6 py-3 rounded-xl text-sm hover:bg-green-50 whitespace-nowrap">
-            Orodhesha Mali Yako →
-          </button>
-        </div>
-      </section>
+        )}
 
-      {/* FOOTER */}
-      <footer className="border-t border-gray-100 py-8 px-6 max-w-4xl mx-auto flex justify-between items-center flex-wrap gap-4 text-sm text-gray-400">
-        <div className="font-bold text-gray-900">Blesauz<span className="text-green-600">.</span></div>
-        <div>Tanzania's direct property platform · No middlemen</div>
-        <div>© 2025 Blesauz.com</div>
-      </footer>
+        {/* STEP 3 - CONDITION */}
+        {step === 3 && (
+          <div className="bg-white rounded-2xl p-8 border border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Condition & age</h2>
+            <p className="text-gray-400 text-sm mb-8">This helps renters understand what to expect.</p>
 
+            <div className="space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Age of the house</label>
+                <div className="grid grid-cols-2 gap-3">
+                  {['New (never lived in)', 'Less than 1 year', '1 - 2 years', '2 - 5 years', '5 - 10 years', '10+ years'].map((age) => (
+                    <button key={age} className="border border-gray-200 rounded-xl py-3 px-4 text-sm text-gray-600 hover:border-green-500 hover:text-green-600 text-left transition-colors">
+                      {age}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Condition</label>
+                <div className="grid grid-cols-2 gap-3">
+                  {['Excellent', 'Good', 'Fair', 'Needs minor work'].map((c) => (
+                    <button key={c} className="border border-gray-200 rounded-xl py-3 text-sm text-gray-600 hover:border-green-500 hover:text-green-600 transition-colors">
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Has it been renovated recently?</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button className="border border-gray-200 rounded-xl py-3 text-sm text-gray-600 hover:border-green-500 hover:text-green-600">Yes</button>
+                  <button className="border border-gray-200 rounded-xl py-3 text-sm text-gray-600 hover:border-green-500 hover:text-green-600">No</button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Floor type</label>
+                  <select className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-500">
+                    <option>Tiles</option><option>Marble</option><option>Cement</option><option>Wood</option><option>Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Roof type</label>
+                  <select className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-500">
+                    <option>Flat concrete</option><option>Pitched tiles</option><option>Iron sheets</option><option>Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-8">
+              <button onClick={() => setStep(2)} className="flex-1 border border-gray-200 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-50">
+                ← Back
+              </button>
+              <button onClick={() => setStep(4)} className="flex-1 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700">
+                Next: Amenities →
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* STEP 4 - AMENITIES */}
+        {step === 4 && (
+          <div className="bg-white rounded-2xl p-8 border border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Amenities</h2>
+            <p className="text-gray-400 text-sm mb-8">What does your property include?</p>
+
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Water source</label>
+                <div className="grid grid-cols-2 gap-3">
+                  {['DAWASA mains', 'Well / Borehole', 'DAWASA + Borehole', 'Other'].map((w) => (
+                    <button key={w} className="border border-gray-200 rounded-xl py-3 text-sm text-gray-600 hover:border-green-500 hover:text-green-600 transition-colors">{w}</button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Water storage tank</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {['No tank', '500 litres', '1,000 litres', '2,000 litres', '5,000 litres', '5,000+ litres'].map((t) => (
+                    <button key={t} className="border border-gray-200 rounded-xl py-3 text-sm text-gray-600 hover:border-green-500 hover:text-green-600 transition-colors">{t}</button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Cooling</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {['AC (all rooms)', 'AC (some rooms)', 'Ceiling fans', 'Standing fans', 'None'].map((c) => (
+                    <button key={c} className="border border-gray-200 rounded-xl py-3 text-sm text-gray-600 hover:border-green-500 hover:text-green-600 transition-colors">{c}</button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Internet</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {['Fibre', '4G Router', 'None'].map((i) => (
+                    <button key={i} className="border border-gray-200 rounded-xl py-3 text-sm text-gray-600 hover:border-green-500 hover:text-green-600 transition-colors">{i}</button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Security</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {['Security guard', 'Electric fence', 'CCTV', 'Alarm', 'Gated', 'None'].map((s) => (
+                    <button key={s} className="border border-gray-200 rounded-xl py-3 text-sm text-gray-600 hover:border-green-500 hover:text-green-600 transition-colors">{s}</button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Furnishing</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {['Fully furnished', 'Partially furnished', 'Unfurnished'].map((f) => (
+                    <button key={f} className="border border-gray-200 rounded-xl py-3 text-sm text-gray-600 hover:border-green-500 hover:text-green-600 transition-colors">{f}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-8">
+              <button onClick={() => setStep(3)} className="flex-1 border border-gray-200 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-50">
+                ← Back
+              </button>
+              <button onClick={() => setStep(5)} className="flex-1 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700">
+                Next: Photos & Price →
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* STEP 5 - PHOTOS & PRICE */}
+        {step === 5 && (
+          <div className="bg-white rounded-2xl p-8 border border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Photos & asking price</h2>
+            <p className="text-gray-400 text-sm mb-8">Add photos and set your monthly rent.</p>
+
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Upload photos (up to 10)</label>
+                <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center hover:border-green-400 transition-colors cursor-pointer">
+                  <div className="text-4xl mb-3">📷</div>
+                  <div className="text-sm text-gray-500 mb-1">Click to upload or drag and drop</div>
+                  <div className="text-xs text-gray-400">JPG or PNG, max 5MB each</div>
+                  <input type="file" multiple accept="image/*" className="hidden" />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <textarea
+                  rows={4}
+                  placeholder="Describe your property — mention what's nearby, transport links, special features..."
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-500 resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Monthly rent (TZS)</label>
+                <input
+                  type="number"
+                  placeholder="e.g. 900000"
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-green-500"
+                />
+                <p className="text-xs text-gray-400 mt-2">After entering your price, we will show you how it compares to similar properties in your area.</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Deposit required?</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {['No deposit', '1 month', '2 months', '3 months'].map((d) => (
+                    <button key={d} className="border border-gray-200 rounded-xl py-3 text-sm text-gray-600 hover:border-green-500 hover:text-green-600 transition-colors">{d}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-8">
+              <button onClick={() => setStep(4)} className="flex-1 border border-gray-200 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-50">
+                ← Back
+              </button>
+              <button className="flex-1 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700">
+                Submit Listing 🎉
+              </button>
+            </div>
+          </div>
+        )}
+
+        <p className="text-center text-xs text-gray-400 mt-6 pb-10">
+          Your listing is free. Blesauz never charges commission.
+        </p>
+      </div>
     </main>
   )
 }
